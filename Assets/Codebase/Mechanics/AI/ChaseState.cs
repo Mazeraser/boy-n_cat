@@ -1,8 +1,9 @@
 using UnityEngine;
-using Codebase.Mechanics.PathfinderSystem;
 using System.Collections.Generic;
+using System.Linq;
+using Codebase.Mechanics.PathfinderSystem;
 
-namespace Codebase.AI
+namespace Codebase.Mechanics.AI
 {
     public class ChaseState : AIStateBase
     {
@@ -10,6 +11,7 @@ namespace Codebase.AI
         private float _maxChaseTime;
         private float _pathUpdateInterval = 3f;
         private float _pathUpdateTimer;
+
         private List<GraphNode> _currentPath;
         private int _currentPathIndex;
 
@@ -30,11 +32,13 @@ namespace Codebase.AI
             _pathUpdateTimer = 0f;
             _currentPathIndex = 0;
         }
+        /*
+        не обнуляем путь для сохранения маршрута
         public override void Exit()
         {
             _currentPath = null;
             _currentPathIndex = 0;
-        }
+        }*/
         
         public override void Update()
         {
@@ -70,9 +74,10 @@ namespace Codebase.AI
                 if (_currentPath != null && _currentPath.Count > 0)
                 {
                     Debug.Log($"Path updated with {_currentPath.Count} nodes");
+                    int i=1;
                     foreach (var node in _currentPath) 
                     {
-                        Debug.Log(node.name);
+                        Debug.Log($"Node[{i++}]: {node.name}");
                     }
                 }
                 else
@@ -100,7 +105,7 @@ namespace Codebase.AI
             }
             
             if (_currentPathIndex < _currentPath.Count && 
-                Vector3.Distance(stateMachine.transform.position, _currentPath[_currentPathIndex].transform.position) < 1f)
+                Vector3.Distance(stateMachine.transform.position, stateMachine.CurrentNode.transform.position) < 0.5f)
             {
                 _currentPathIndex++;
                 stateMachine.CurrentNode = _currentPath[_currentPathIndex - 1];
@@ -111,13 +116,15 @@ namespace Codebase.AI
 
             if (_currentPathIndex < _currentPath.Count && !canGoDirectly)
             {
-                MoveToNode(_currentPath[_currentPathIndex]);
+                MoveToNode(stateMachine.CurrentNode);
             }
-            else
+            else if(canGoDirectly)
             {
                 _chaseTimer = 0;
                 MoveToPlayerDirectly();
             }
+            else
+                UpdatePathToPlayer();
         }
         private bool HasObstacleInDirection(Vector3 direction, float checkDistance = 2f, float angle=15f)
         {

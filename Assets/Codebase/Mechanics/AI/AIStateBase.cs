@@ -1,7 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
 using Codebase.Mechanics.MoveSystem;
+using Codebase.Mechanics.PathfinderSystem;
+using Codebase.Mechanics.StealSystem;
 
-namespace Codebase.AI
+namespace Codebase.Mechanics.AI
 {
     public abstract class AIStateBase
     {
@@ -82,18 +85,17 @@ namespace Codebase.AI
         
         protected bool IsPlayerActuallyStealing()
         {
-            // TODO: Проверить через систему инвентаря/предметов, что игрок украл предмет
-            return false;
+            return stateMachine.Player.gameObject.GetComponent<RobberComponent>().Stealing;
         }
         protected bool IsPlayerStealing()
         {
             // TODO: Реализовать логику обнаружения кражи
             // Проверка расстояния (Done)
             // прямой видимости (Done)
-            // и факта кражи 
+            // и факта кражи (Done)
             return IsPlayerInRange(stateMachine.DetectionRange)
-             && HasLineOfSightToPlayer();
-            //&& IsPlayerActuallyStealing();
+            && HasLineOfSightToPlayer()
+            && IsPlayerActuallyStealing();
         }
     }
 }

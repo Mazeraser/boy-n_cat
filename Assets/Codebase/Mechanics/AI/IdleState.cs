@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Codebase.AI
+namespace Codebase.Mechanics.AI
 {
     public class IdleState : AIStateBase
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Codebase.Mechanics.PathfinderSystem;
 
-namespace Codebase.AI
+namespace Codebase.Mechanics.AI
 {
     public class PatrolState : AIStateBase
     {
@@ -22,7 +22,8 @@ namespace Codebase.AI
             //TODO: Воспроизвести анимацию патруля
             Debug.Log($"{stateMachine.name} начал патрулирование");
             _patrolCount = 0;
-            _availablePoints = new List<GraphNode>(stateMachine.PatrolPoints);
+            _availablePoints = new List<GraphNode>();
+            _availablePoints.Add(stateMachine.CurrentNode);
             SelectNextPatrolPoint();
         }
         

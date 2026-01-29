@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Codebase.Mechanics.MoveSystem;
 using Codebase.Mechanics.PathfinderSystem;
 
-namespace Codebase.AI
+namespace Codebase.Mechanics.AI
 {
     public enum AIState
     {
@@ -22,7 +22,7 @@ namespace Codebase.AI
         
         [SerializeField] private Transform _player; //TODO: Реализовать добавление игрока через DI
         [SerializeField] private Transform _arrestZone;
-        [SerializeField] private List<GraphNode> _patrolStartPoints = new List<GraphNode>();
+        [SerializeField] private GraphNode _patrolStartPoint;
         [SerializeField] private float _detectionRange = 5f;
         [SerializeField] private float _arrestRange = 2f;
 
@@ -34,10 +34,9 @@ namespace Codebase.AI
         private float _maxChaseTime=6f;
 
         [HideInInspector]public GraphNode CurrentNode;
-        
+
         public Transform Player => _player;
         public Transform ArrestZone => _arrestZone;
-        public List<GraphNode> PatrolPoints => _patrolStartPoints;
         public float DetectionRange => _detectionRange;
         public float ArrestRange => _arrestRange;
         
@@ -58,6 +57,7 @@ namespace Codebase.AI
         private void Start()
         {
             ChangeState(AIState.Idle);
+            CurrentNode = _patrolStartPoint;
         }
         private void Update()
         {

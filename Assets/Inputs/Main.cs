@@ -100,6 +100,15 @@ public partial class @Main: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Steal"",
+                    ""type"": ""Button"",
+                    ""id"": ""5d6969cc-f963-4d35-866e-190e8e9216fd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -157,6 +166,17 @@ public partial class @Main: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0dcd9f35-beb0-4e7c-b766-8fedfa024e09"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Steal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -183,6 +203,7 @@ public partial class @Main: IInputActionCollection2, IDisposable
         // Move
         m_Move = asset.FindActionMap("Move", throwIfNotFound: true);
         m_Move_Move = m_Move.FindAction("Move", throwIfNotFound: true);
+        m_Move_Steal = m_Move.FindAction("Steal", throwIfNotFound: true);
     }
 
     ~@Main()
@@ -264,6 +285,7 @@ public partial class @Main: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Move;
     private List<IMoveActions> m_MoveActionsCallbackInterfaces = new List<IMoveActions>();
     private readonly InputAction m_Move_Move;
+    private readonly InputAction m_Move_Steal;
     /// <summary>
     /// Provides access to input actions defined in input action map "Move".
     /// </summary>
@@ -279,6 +301,10 @@ public partial class @Main: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Move/Move".
         /// </summary>
         public InputAction @Move => m_Wrapper.m_Move_Move;
+        /// <summary>
+        /// Provides access to the underlying input action "Move/Steal".
+        /// </summary>
+        public InputAction @Steal => m_Wrapper.m_Move_Steal;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -308,6 +334,9 @@ public partial class @Main: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Steal.started += instance.OnSteal;
+            @Steal.performed += instance.OnSteal;
+            @Steal.canceled += instance.OnSteal;
         }
 
         /// <summary>
@@ -322,6 +351,9 @@ public partial class @Main: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Steal.started -= instance.OnSteal;
+            @Steal.performed -= instance.OnSteal;
+            @Steal.canceled -= instance.OnSteal;
         }
 
         /// <summary>
@@ -382,5 +414,12 @@ public partial class @Main: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Steal" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSteal(InputAction.CallbackContext context);
     }
 }
